@@ -12,14 +12,15 @@
 
     function getLocation() {
         if (navigator.geolocation) {
-            navigator.geolocation.watchPosition(showPosition);
+            navigator.geolocation.watchPosition(updatePosition);
         } else {
             locationBlock.innerHTML = "Geolocation is not supported by this browser.";
         }
     }
-    function showPosition(position) {
-        socket.send(["Lat: " + position.coords.latitude,
-                     "Long: " + position.coords.longitude].join("\n"));
+    function updatePosition(position) {
+        var positionData = {"longitude": position.coords.longitude,
+                            "latitude": position.coords.latitude};
+        socket.send(JSON.stringify(positionData));
     }
     var map = new ol.Map({
         target: 'map',
